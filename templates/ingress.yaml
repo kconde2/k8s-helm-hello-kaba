@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hello-kaba-web-tls
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`hello-kaba.kube.kabaconde.com`) && PathPrefix(`/`)
+    services:
+    - name: {{ include "hello-kaba.fullname" . }}
+      port: {{ .Values.service.port }}
+  tls:
+    certResolver: le
